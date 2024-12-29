@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<mavlink>
+    <include>standard.xml</include>
+    <version>0</version>
+    <dialect>0</dialect>
+
+    <messages>
+        <message id="996633" name="WINCH_MOTOR_STATS">
+            <description>The motor status, containing voltage, current, rpm, torque, etc.</description>
+            <field type="uint8_t" name="target_system">System ID.</field>
+            <field type="uint8_t" name="target_component">Component ID.</field>
+            <field type="float" name="motor_voltage" units="V">Motor voltage.</field>
+            <field type="float" name="motor_current" units="A">Motor current.</field>
+            <field type="uint16_t" name="motor_rpm" units="rpm">Motor rpm.</field>
+            <field type="float" name="motor_torque" units="N/m">Motor torque.</field>
+            <field type="uint16_t" name="motor_angle" units="deg">Motor angle.</field>
+        </message>
+    </messages>
+
+</mavlink>

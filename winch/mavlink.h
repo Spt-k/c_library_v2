@@ -1,12 +1,12 @@
 /** @file
- *  @brief MAVLink comm protocol built from python_array_test.xml
+ *  @brief MAVLink comm protocol built from winch.xml
  *  @see http://mavlink.org
  */
 #pragma once
 #ifndef MAVLINK_H
 #define MAVLINK_H
 
-#define MAVLINK_PRIMARY_XML_HASH 7253806640129620096
+#define MAVLINK_PRIMARY_XML_HASH 9190061089256078985
 
 #ifndef MAVLINK_STX
 #define MAVLINK_STX 253
@@ -29,6 +29,6 @@
 #endif
 
 #include "version.h"
-#include "python_array_test.h"
+#include "winch.h"
 
 #endif // MAVLINK_H

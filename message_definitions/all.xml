@@ -9,6 +9,9 @@
     messages: 8000 - 8999
     commands: 40001 - 41999
   -->
+
+  <include>winch.xml</include>
+  
   <include>ASLUAV.xml</include>
   <!-- common.xml range of IDs:
     messages: 300 - 10000
