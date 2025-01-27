@@ -10,7 +10,7 @@
     #error Wrong include order: MAVLINK_WINCH.H MUST NOT BE DIRECTLY USED. Include mavlink.h from the same directory instead or set ALL AND EVERY defines from MAVLINK.H manually accordingly, including the #define MAVLINK_H call.
 #endif
 
-#define MAVLINK_WINCH_XML_HASH 2246114950222636378
+#define MAVLINK_WINCH_XML_HASH 3387744642643813037
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,7 +23,7 @@ extern "C" {
 #endif
 
 #ifndef MAVLINK_MESSAGE_CRCS
-#define MAVLINK_MESSAGE_CRCS {{0, 50, 9, 9, 0, 0, 0}, {300, 217, 22, 22, 0, 0, 0}, {52500, 88, 3, 3, 3, 0, 1}, {52501, 13, 3, 3, 3, 0, 1}, {52502, 236, 6, 6, 3, 4, 5}, {52503, 9, 8, 8, 3, 4, 5}}
+#define MAVLINK_MESSAGE_CRCS {{0, 50, 9, 9, 0, 0, 0}, {300, 217, 22, 22, 0, 0, 0}, {52500, 88, 3, 3, 3, 0, 1}, {52501, 13, 3, 3, 3, 0, 1}, {52502, 236, 6, 6, 3, 4, 5}, {52503, 192, 12, 12, 3, 8, 9}}
 #endif
 
 #include "../protocol.h"
