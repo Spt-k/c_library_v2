@@ -11,15 +11,17 @@ typedef struct __mavlink_winch_telem_t {
  uint8_t target_component; /*<  Target component ID.*/
  uint8_t dc_status; /*<  DC status.*/
  uint8_t ac_status; /*<  AC status.*/
+ uint8_t torque_min; /*<  Minimum motor torque.*/
+ uint8_t torque_max; /*<  Maximum motor torque.*/
 } mavlink_winch_telem_t;
 
-#define MAVLINK_MSG_ID_WINCH_TELEM_LEN 12
-#define MAVLINK_MSG_ID_WINCH_TELEM_MIN_LEN 12
-#define MAVLINK_MSG_ID_52503_LEN 12
-#define MAVLINK_MSG_ID_52503_MIN_LEN 12
+#define MAVLINK_MSG_ID_WINCH_TELEM_LEN 14
+#define MAVLINK_MSG_ID_WINCH_TELEM_MIN_LEN 14
+#define MAVLINK_MSG_ID_52503_LEN 14
+#define MAVLINK_MSG_ID_52503_MIN_LEN 14
 
-#define MAVLINK_MSG_ID_WINCH_TELEM_CRC 192
-#define MAVLINK_MSG_ID_52503_CRC 192
+#define MAVLINK_MSG_ID_WINCH_TELEM_CRC 243
+#define MAVLINK_MSG_ID_52503_CRC 243
 
 
 
@@ -27,25 +29,29 @@ typedef struct __mavlink_winch_telem_t {
 #define MAVLINK_MESSAGE_INFO_WINCH_TELEM { \
     52503, \
     "WINCH_TELEM", \
-    6, \
+    8, \
     {  { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 8, offsetof(mavlink_winch_telem_t, target_system) }, \
          { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 9, offsetof(mavlink_winch_telem_t, target_component) }, \
          { "cable_released", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_winch_telem_t, cable_released) }, \
          { "reserve_charge", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_winch_telem_t, reserve_charge) }, \
          { "dc_status", NULL, MAVLINK_TYPE_UINT8_T, 0, 10, offsetof(mavlink_winch_telem_t, dc_status) }, \
          { "ac_status", NULL, MAVLINK_TYPE_UINT8_T, 0, 11, offsetof(mavlink_winch_telem_t, ac_status) }, \
+         { "torque_min", NULL, MAVLINK_TYPE_UINT8_T, 0, 12, offsetof(mavlink_winch_telem_t, torque_min) }, \
+         { "torque_max", NULL, MAVLINK_TYPE_UINT8_T, 0, 13, offsetof(mavlink_winch_telem_t, torque_max) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_WINCH_TELEM { \
     "WINCH_TELEM", \
-    6, \
+    8, \
     {  { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 8, offsetof(mavlink_winch_telem_t, target_system) }, \
          { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 9, offsetof(mavlink_winch_telem_t, target_component) }, \
          { "cable_released", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_winch_telem_t, cable_released) }, \
          { "reserve_charge", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_winch_telem_t, reserve_charge) }, \
          { "dc_status", NULL, MAVLINK_TYPE_UINT8_T, 0, 10, offsetof(mavlink_winch_telem_t, dc_status) }, \
          { "ac_status", NULL, MAVLINK_TYPE_UINT8_T, 0, 11, offsetof(mavlink_winch_telem_t, ac_status) }, \
+         { "torque_min", NULL, MAVLINK_TYPE_UINT8_T, 0, 12, offsetof(mavlink_winch_telem_t, torque_min) }, \
+         { "torque_max", NULL, MAVLINK_TYPE_UINT8_T, 0, 13, offsetof(mavlink_winch_telem_t, torque_max) }, \
          } \
 }
 #endif
@@ -62,10 +68,12 @@ typedef struct __mavlink_winch_telem_t {
  * @param reserve_charge  Reserve battery voltage.
  * @param dc_status  DC status.
  * @param ac_status  AC status.
+ * @param torque_min  Minimum motor torque.
+ * @param torque_max  Maximum motor torque.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_winch_telem_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               uint8_t target_system, uint8_t target_component, float cable_released, float reserve_charge, uint8_t dc_status, uint8_t ac_status)
+                               uint8_t target_system, uint8_t target_component, float cable_released, float reserve_charge, uint8_t dc_status, uint8_t ac_status, uint8_t torque_min, uint8_t torque_max)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_WINCH_TELEM_LEN];
@@ -75,6 +83,8 @@ static inline uint16_t mavlink_msg_winch_telem_pack(uint8_t system_id, uint8_t c
     _mav_put_uint8_t(buf, 9, target_component);
     _mav_put_uint8_t(buf, 10, dc_status);
     _mav_put_uint8_t(buf, 11, ac_status);
+    _mav_put_uint8_t(buf, 12, torque_min);
+    _mav_put_uint8_t(buf, 13, torque_max);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_WINCH_TELEM_LEN);
 #else
@@ -85,6 +95,8 @@ static inline uint16_t mavlink_msg_winch_telem_pack(uint8_t system_id, uint8_t c
     packet.target_component = target_component;
     packet.dc_status = dc_status;
     packet.ac_status = ac_status;
+    packet.torque_min = torque_min;
+    packet.torque_max = torque_max;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_WINCH_TELEM_LEN);
 #endif
@@ -106,10 +118,12 @@ static inline uint16_t mavlink_msg_winch_telem_pack(uint8_t system_id, uint8_t c
  * @param reserve_charge  Reserve battery voltage.
  * @param dc_status  DC status.
  * @param ac_status  AC status.
+ * @param torque_min  Minimum motor torque.
+ * @param torque_max  Maximum motor torque.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_winch_telem_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               uint8_t target_system, uint8_t target_component, float cable_released, float reserve_charge, uint8_t dc_status, uint8_t ac_status)
+                               uint8_t target_system, uint8_t target_component, float cable_released, float reserve_charge, uint8_t dc_status, uint8_t ac_status, uint8_t torque_min, uint8_t torque_max)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_WINCH_TELEM_LEN];
@@ -119,6 +133,8 @@ static inline uint16_t mavlink_msg_winch_telem_pack_status(uint8_t system_id, ui
     _mav_put_uint8_t(buf, 9, target_component);
     _mav_put_uint8_t(buf, 10, dc_status);
     _mav_put_uint8_t(buf, 11, ac_status);
+    _mav_put_uint8_t(buf, 12, torque_min);
+    _mav_put_uint8_t(buf, 13, torque_max);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_WINCH_TELEM_LEN);
 #else
@@ -129,6 +145,8 @@ static inline uint16_t mavlink_msg_winch_telem_pack_status(uint8_t system_id, ui
     packet.target_component = target_component;
     packet.dc_status = dc_status;
     packet.ac_status = ac_status;
+    packet.torque_min = torque_min;
+    packet.torque_max = torque_max;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_WINCH_TELEM_LEN);
 #endif
@@ -153,11 +171,13 @@ static inline uint16_t mavlink_msg_winch_telem_pack_status(uint8_t system_id, ui
  * @param reserve_charge  Reserve battery voltage.
  * @param dc_status  DC status.
  * @param ac_status  AC status.
+ * @param torque_min  Minimum motor torque.
+ * @param torque_max  Maximum motor torque.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_winch_telem_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   uint8_t target_system,uint8_t target_component,float cable_released,float reserve_charge,uint8_t dc_status,uint8_t ac_status)
+                                   uint8_t target_system,uint8_t target_component,float cable_released,float reserve_charge,uint8_t dc_status,uint8_t ac_status,uint8_t torque_min,uint8_t torque_max)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_WINCH_TELEM_LEN];
@@ -167,6 +187,8 @@ static inline uint16_t mavlink_msg_winch_telem_pack_chan(uint8_t system_id, uint
     _mav_put_uint8_t(buf, 9, target_component);
     _mav_put_uint8_t(buf, 10, dc_status);
     _mav_put_uint8_t(buf, 11, ac_status);
+    _mav_put_uint8_t(buf, 12, torque_min);
+    _mav_put_uint8_t(buf, 13, torque_max);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_WINCH_TELEM_LEN);
 #else
@@ -177,6 +199,8 @@ static inline uint16_t mavlink_msg_winch_telem_pack_chan(uint8_t system_id, uint
     packet.target_component = target_component;
     packet.dc_status = dc_status;
     packet.ac_status = ac_status;
+    packet.torque_min = torque_min;
+    packet.torque_max = torque_max;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_WINCH_TELEM_LEN);
 #endif
@@ -195,7 +219,7 @@ static inline uint16_t mavlink_msg_winch_telem_pack_chan(uint8_t system_id, uint
  */
 static inline uint16_t mavlink_msg_winch_telem_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_winch_telem_t* winch_telem)
 {
-    return mavlink_msg_winch_telem_pack(system_id, component_id, msg, winch_telem->target_system, winch_telem->target_component, winch_telem->cable_released, winch_telem->reserve_charge, winch_telem->dc_status, winch_telem->ac_status);
+    return mavlink_msg_winch_telem_pack(system_id, component_id, msg, winch_telem->target_system, winch_telem->target_component, winch_telem->cable_released, winch_telem->reserve_charge, winch_telem->dc_status, winch_telem->ac_status, winch_telem->torque_min, winch_telem->torque_max);
 }
 
 /**
@@ -209,7 +233,7 @@ static inline uint16_t mavlink_msg_winch_telem_encode(uint8_t system_id, uint8_t
  */
 static inline uint16_t mavlink_msg_winch_telem_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_winch_telem_t* winch_telem)
 {
-    return mavlink_msg_winch_telem_pack_chan(system_id, component_id, chan, msg, winch_telem->target_system, winch_telem->target_component, winch_telem->cable_released, winch_telem->reserve_charge, winch_telem->dc_status, winch_telem->ac_status);
+    return mavlink_msg_winch_telem_pack_chan(system_id, component_id, chan, msg, winch_telem->target_system, winch_telem->target_component, winch_telem->cable_released, winch_telem->reserve_charge, winch_telem->dc_status, winch_telem->ac_status, winch_telem->torque_min, winch_telem->torque_max);
 }
 
 /**
@@ -223,7 +247,7 @@ static inline uint16_t mavlink_msg_winch_telem_encode_chan(uint8_t system_id, ui
  */
 static inline uint16_t mavlink_msg_winch_telem_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_winch_telem_t* winch_telem)
 {
-    return mavlink_msg_winch_telem_pack_status(system_id, component_id, _status, msg,  winch_telem->target_system, winch_telem->target_component, winch_telem->cable_released, winch_telem->reserve_charge, winch_telem->dc_status, winch_telem->ac_status);
+    return mavlink_msg_winch_telem_pack_status(system_id, component_id, _status, msg,  winch_telem->target_system, winch_telem->target_component, winch_telem->cable_released, winch_telem->reserve_charge, winch_telem->dc_status, winch_telem->ac_status, winch_telem->torque_min, winch_telem->torque_max);
 }
 
 /**
@@ -236,10 +260,12 @@ static inline uint16_t mavlink_msg_winch_telem_encode_status(uint8_t system_id, 
  * @param reserve_charge  Reserve battery voltage.
  * @param dc_status  DC status.
  * @param ac_status  AC status.
+ * @param torque_min  Minimum motor torque.
+ * @param torque_max  Maximum motor torque.
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_winch_telem_send(mavlink_channel_t chan, uint8_t target_system, uint8_t target_component, float cable_released, float reserve_charge, uint8_t dc_status, uint8_t ac_status)
+static inline void mavlink_msg_winch_telem_send(mavlink_channel_t chan, uint8_t target_system, uint8_t target_component, float cable_released, float reserve_charge, uint8_t dc_status, uint8_t ac_status, uint8_t torque_min, uint8_t torque_max)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_WINCH_TELEM_LEN];
@@ -249,6 +275,8 @@ static inline void mavlink_msg_winch_telem_send(mavlink_channel_t chan, uint8_t 
     _mav_put_uint8_t(buf, 9, target_component);
     _mav_put_uint8_t(buf, 10, dc_status);
     _mav_put_uint8_t(buf, 11, ac_status);
+    _mav_put_uint8_t(buf, 12, torque_min);
+    _mav_put_uint8_t(buf, 13, torque_max);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_WINCH_TELEM, buf, MAVLINK_MSG_ID_WINCH_TELEM_MIN_LEN, MAVLINK_MSG_ID_WINCH_TELEM_LEN, MAVLINK_MSG_ID_WINCH_TELEM_CRC);
 #else
@@ -259,6 +287,8 @@ static inline void mavlink_msg_winch_telem_send(mavlink_channel_t chan, uint8_t 
     packet.target_component = target_component;
     packet.dc_status = dc_status;
     packet.ac_status = ac_status;
+    packet.torque_min = torque_min;
+    packet.torque_max = torque_max;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_WINCH_TELEM, (const char *)&packet, MAVLINK_MSG_ID_WINCH_TELEM_MIN_LEN, MAVLINK_MSG_ID_WINCH_TELEM_LEN, MAVLINK_MSG_ID_WINCH_TELEM_CRC);
 #endif
@@ -272,7 +302,7 @@ static inline void mavlink_msg_winch_telem_send(mavlink_channel_t chan, uint8_t 
 static inline void mavlink_msg_winch_telem_send_struct(mavlink_channel_t chan, const mavlink_winch_telem_t* winch_telem)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_winch_telem_send(chan, winch_telem->target_system, winch_telem->target_component, winch_telem->cable_released, winch_telem->reserve_charge, winch_telem->dc_status, winch_telem->ac_status);
+    mavlink_msg_winch_telem_send(chan, winch_telem->target_system, winch_telem->target_component, winch_telem->cable_released, winch_telem->reserve_charge, winch_telem->dc_status, winch_telem->ac_status, winch_telem->torque_min, winch_telem->torque_max);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_WINCH_TELEM, (const char *)winch_telem, MAVLINK_MSG_ID_WINCH_TELEM_MIN_LEN, MAVLINK_MSG_ID_WINCH_TELEM_LEN, MAVLINK_MSG_ID_WINCH_TELEM_CRC);
 #endif
@@ -286,7 +316,7 @@ static inline void mavlink_msg_winch_telem_send_struct(mavlink_channel_t chan, c
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_winch_telem_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t target_system, uint8_t target_component, float cable_released, float reserve_charge, uint8_t dc_status, uint8_t ac_status)
+static inline void mavlink_msg_winch_telem_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t target_system, uint8_t target_component, float cable_released, float reserve_charge, uint8_t dc_status, uint8_t ac_status, uint8_t torque_min, uint8_t torque_max)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
@@ -296,6 +326,8 @@ static inline void mavlink_msg_winch_telem_send_buf(mavlink_message_t *msgbuf, m
     _mav_put_uint8_t(buf, 9, target_component);
     _mav_put_uint8_t(buf, 10, dc_status);
     _mav_put_uint8_t(buf, 11, ac_status);
+    _mav_put_uint8_t(buf, 12, torque_min);
+    _mav_put_uint8_t(buf, 13, torque_max);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_WINCH_TELEM, buf, MAVLINK_MSG_ID_WINCH_TELEM_MIN_LEN, MAVLINK_MSG_ID_WINCH_TELEM_LEN, MAVLINK_MSG_ID_WINCH_TELEM_CRC);
 #else
@@ -306,6 +338,8 @@ static inline void mavlink_msg_winch_telem_send_buf(mavlink_message_t *msgbuf, m
     packet->target_component = target_component;
     packet->dc_status = dc_status;
     packet->ac_status = ac_status;
+    packet->torque_min = torque_min;
+    packet->torque_max = torque_max;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_WINCH_TELEM, (const char *)packet, MAVLINK_MSG_ID_WINCH_TELEM_MIN_LEN, MAVLINK_MSG_ID_WINCH_TELEM_LEN, MAVLINK_MSG_ID_WINCH_TELEM_CRC);
 #endif
@@ -378,6 +412,26 @@ static inline uint8_t mavlink_msg_winch_telem_get_ac_status(const mavlink_messag
 }
 
 /**
+ * @brief Get field torque_min from winch_telem message
+ *
+ * @return  Minimum motor torque.
+ */
+static inline uint8_t mavlink_msg_winch_telem_get_torque_min(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint8_t(msg,  12);
+}
+
+/**
+ * @brief Get field torque_max from winch_telem message
+ *
+ * @return  Maximum motor torque.
+ */
+static inline uint8_t mavlink_msg_winch_telem_get_torque_max(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint8_t(msg,  13);
+}
+
+/**
  * @brief Decode a winch_telem message into a struct
  *
  * @param msg The message to decode
@@ -392,6 +446,8 @@ static inline void mavlink_msg_winch_telem_decode(const mavlink_message_t* msg, 
     winch_telem->target_component = mavlink_msg_winch_telem_get_target_component(msg);
     winch_telem->dc_status = mavlink_msg_winch_telem_get_dc_status(msg);
     winch_telem->ac_status = mavlink_msg_winch_telem_get_ac_status(msg);
+    winch_telem->torque_min = mavlink_msg_winch_telem_get_torque_min(msg);
+    winch_telem->torque_max = mavlink_msg_winch_telem_get_torque_max(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_WINCH_TELEM_LEN? msg->len : MAVLINK_MSG_ID_WINCH_TELEM_LEN;
         memset(winch_telem, 0, MAVLINK_MSG_ID_WINCH_TELEM_LEN);
