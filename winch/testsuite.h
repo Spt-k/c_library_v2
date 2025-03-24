@@ -220,7 +220,7 @@ static void mavlink_test_winch_telem(uint8_t system_id, uint8_t component_id, ma
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_winch_telem_t packet_in = {
-        17.0,45.0,29,96,163,230,41,108
+        17.0,45.0,29,96,163,230,41,108,175
     };
     mavlink_winch_telem_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -232,6 +232,7 @@ static void mavlink_test_winch_telem(uint8_t system_id, uint8_t component_id, ma
         packet1.ac_status = packet_in.ac_status;
         packet1.torque_min = packet_in.torque_min;
         packet1.torque_max = packet_in.torque_max;
+        packet1.external_battery_level = packet_in.external_battery_level;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -246,12 +247,12 @@ static void mavlink_test_winch_telem(uint8_t system_id, uint8_t component_id, ma
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_winch_telem_pack(system_id, component_id, &msg , packet1.target_system , packet1.target_component , packet1.cable_released , packet1.reserve_charge , packet1.dc_status , packet1.ac_status , packet1.torque_min , packet1.torque_max );
+    mavlink_msg_winch_telem_pack(system_id, component_id, &msg , packet1.target_system , packet1.target_component , packet1.cable_released , packet1.reserve_charge , packet1.dc_status , packet1.ac_status , packet1.torque_min , packet1.torque_max , packet1.external_battery_level );
     mavlink_msg_winch_telem_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_winch_telem_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.target_component , packet1.cable_released , packet1.reserve_charge , packet1.dc_status , packet1.ac_status , packet1.torque_min , packet1.torque_max );
+    mavlink_msg_winch_telem_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.target_component , packet1.cable_released , packet1.reserve_charge , packet1.dc_status , packet1.ac_status , packet1.torque_min , packet1.torque_max , packet1.external_battery_level );
     mavlink_msg_winch_telem_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -264,7 +265,7 @@ static void mavlink_test_winch_telem(uint8_t system_id, uint8_t component_id, ma
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_winch_telem_send(MAVLINK_COMM_1 , packet1.target_system , packet1.target_component , packet1.cable_released , packet1.reserve_charge , packet1.dc_status , packet1.ac_status , packet1.torque_min , packet1.torque_max );
+    mavlink_msg_winch_telem_send(MAVLINK_COMM_1 , packet1.target_system , packet1.target_component , packet1.cable_released , packet1.reserve_charge , packet1.dc_status , packet1.ac_status , packet1.torque_min , packet1.torque_max , packet1.external_battery_level );
     mavlink_msg_winch_telem_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
