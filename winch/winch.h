@@ -10,7 +10,7 @@
     #error Wrong include order: MAVLINK_WINCH.H MUST NOT BE DIRECTLY USED. Include mavlink.h from the same directory instead or set ALL AND EVERY defines from MAVLINK.H manually accordingly, including the #define MAVLINK_H call.
 #endif
 
-#define MAVLINK_WINCH_XML_HASH -6358361851588052230
+#define MAVLINK_WINCH_XML_HASH 3116883567198617339
 
 #ifdef __cplusplus
 extern "C" {
